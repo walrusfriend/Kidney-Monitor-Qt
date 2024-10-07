@@ -8,7 +8,15 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# Change the build output default directory
+CONFIG(debug, debug|release) {
+    DESTDIR = $$PWD/build/Debug
+} else {
+    DESTDIR = $$PWD/build/Release
+}
+
 SOURCES += \
+    ReportUnit.cpp \
     SerialCommunicator.cpp \
     main.cpp \
     mainwindow.cpp

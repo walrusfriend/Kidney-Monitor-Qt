@@ -9,6 +9,8 @@
 #include <QThread>
 #include <Data_Types.h>
 
+#include <ReportUnit.h>
+
 class SerialCommunicator : public QObject
 {
     Q_OBJECT
@@ -20,7 +22,7 @@ public:
     Q_SIGNAL void connected();
     Q_SIGNAL void disconnected();
     Q_SIGNAL void errorOccured(const QString& error);
-//    Q_SIGNAL void newReport(const ArincReportReceive& report);
+    Q_SIGNAL void newReport(const ReportUnit& report);
     Q_SIGNAL void ledColorChanged(const LedColor& color);
     Q_SIGNAL void queryVersion();
     Q_SIGNAL void setVersion(const QString& version);

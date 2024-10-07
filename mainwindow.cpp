@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_communicator(new SerialCommunicator())
-    , m_communicatorThread(new QThread(this))
+    // , m_communicatorThread(new QThread(this))
 {
     ui->setupUi(this);
 
@@ -24,9 +24,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connectCommunicator();
 
-    m_communicator->moveToThread(m_communicatorThread);
-    m_communicatorThread->start();
-
+    // m_communicator->moveToThread(m_communicatorThread);
+    // m_communicatorThread->start();
 
     /* Fill the combo box with COM ports */
     updateDeviceList();
@@ -34,6 +33,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    // m_communicatorThread->quit();
+    // m_communicatorThread->wait();
+    // delete m_communicatorThread;
     delete ui;
 }
 
@@ -76,10 +78,10 @@ void MainWindow::onDeviceComboCurrentTextChanged(const QString &text)
 
 void MainWindow::onBtnConnectClicked()
 {
-    if (this->deviceConnected) {
-        Q_EMIT this->setPortOpen(false);
+    if (deviceConnected) {
+        Q_EMIT setPortOpen(false);
     } else {
-        Q_EMIT this->setPortOpen(true);
+        Q_EMIT setPortOpen(true);
     }
 }
 
@@ -88,8 +90,8 @@ void MainWindow::connectCommunicator()
     if (m_communicator) {
 //        connect(m_communicatorThread, &QThread::started,
 //                m_communicator, &MKIO_CommunicatorBase::process, Qt::QueuedConnection);
-        connect(m_communicatorThread, &QThread::finished,
-                m_communicator, &QObject::deleteLater, Qt::DirectConnection);
+        // connect(m_communicatorThread, &QThread::finished,
+        //         m_communicator, &QObject::deleteLater, Qt::DirectConnection);
 //        connect(m_communicator, &MKIO_CommunicatorBase::initialized,
 //                this, &InterfaceModuleBase::onCommunicatorInitialized, Qt::QueuedConnection);
 
@@ -100,14 +102,14 @@ void MainWindow::connectCommunicator()
                 m_communicator, &SerialCommunicator::onSetConnectionTarget,
                 Qt::QueuedConnection);
 
-        connect(m_communicator, &SerialCommunicator::connected
-                , this, &MainWindow::onDeviceConnected, Qt::QueuedConnection);
+        connect(m_communicator, &SerialCommunicator::connected,
+                this, &MainWindow::onDeviceConnected, Qt::QueuedConnection);
         connect(m_communicator, &SerialCommunicator::disconnected,
                 this, &MainWindow::onDeviceDisconnected, Qt::QueuedConnection);
         connect(m_communicator, &SerialCommunicator::ledColorChanged,
-                this, &::MainWindow::onLedColorChanged, Qt::QueuedConnection);
-//        connect(m_communicator, &SerialCommunicator::newReport,
-//                this, &InterfaceModuleBase::onNewReport, Qt::QueuedConnection);
+                this, &MainWindow::onLedColorChanged, Qt::QueuedConnection);
+        connect(m_communicator, &SerialCommunicator::newReport,
+                this, &MainWindow::onNewReport, Qt::QueuedConnection);
 //        connect(m_communicator, &MKIO_CommunicatorBase::errorOccured,
 //                this, &InterfaceModuleBase::onCommunicationErrorOccured, Qt::QueuedConnection);
     }
@@ -117,8 +119,8 @@ void MainWindow::disconnectCommunicator() {
     if (m_communicator) {
 //        disconnect(m_communicatorThread, &QThread::started,
 //                   m_communicator, &MKIO_CommunicatorBase::process);
-        disconnect(m_communicatorThread, &QThread::finished,
-                   m_communicator, &QObject::deleteLater);
+        // disconnect(m_communicatorThread, &QThread::finished,
+        //            m_communicator, &QObject::deleteLater);
 //        disconnect(m_communicator, &MKIO_CommunicatorBase::initialized,
 //                   this, &InterfaceModuleBase::onCommunicatorInitialized);
 
@@ -132,9 +134,9 @@ void MainWindow::disconnectCommunicator() {
         disconnect(m_communicator, &SerialCommunicator::disconnected,
                    this, &MainWindow::onDeviceDisconnected);
         disconnect(m_communicator, &SerialCommunicator::ledColorChanged,
-                   this, &::MainWindow::onLedColorChanged);
-//        disconnect(m_communicator, &MKIO_CommunicatorBase::newReport,
-//                   this, &InterfaceModuleBase::onNewReport);
+                   this, &MainWindow::onLedColorChanged);
+        disconnect(m_communicator, &SerialCommunicator::newReport,
+                    this, &MainWindow::onNewReport);
 //        disconnect(m_communicator, &MKIO_CommunicatorBase::errorOccured,
 //                   this, &InterfaceModuleBase::onCommunicationErrorOccured);
     }
@@ -186,4 +188,16 @@ void MainWindow::onLedColorChanged(LedColor color)
                                       "border-style: outset;");
     }
     m_ledColor = color;
+}
+
+void MainWindow::onNewReport(const ReportUnit& report) {
+    qDebug() << report;
+
+    ui->le_pressure->setText(QString::number(report.fill_value));
+    ui->le_resistance->setText(QString::number(report.resistance));
+    ui->le_perfussion_speed->setText(QString::number(report.flow));
+    ui->le_temp1->setText(QString::number(report.temp1));
+    ui->le_temp2->setText(QString::number(report.temp2));
+
+    ui->le_duration->setText(report.time.toString());
 }

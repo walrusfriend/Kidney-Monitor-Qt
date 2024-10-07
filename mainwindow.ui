@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>814</width>
     <height>600</height>
    </rect>
   </property>
@@ -17,6 +17,13 @@
    <layout class="QVBoxLayout" name="verticalLayout_10">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_30">
+        <property name="text">
+         <string>СОМ порт</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QComboBox" name="cb_device"/>
       </item>
@@ -53,12 +60,25 @@ border-style: outset;</string>
         </property>
        </widget>
       </item>
+      <item>
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </item>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -78,13 +98,13 @@ border-style: outset;</string>
                </size>
               </property>
               <property name="frameShape">
-               <enum>QFrame::Panel</enum>
+               <enum>QFrame::Shape::Panel</enum>
               </property>
               <property name="text">
                <string>Начальные данные</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -104,7 +124,7 @@ border-style: outset;</string>
                <string>Дата/Время</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -120,7 +140,7 @@ border-style: outset;</string>
                <string>15:00:00 01-01-24</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -140,7 +160,7 @@ border-style: outset;</string>
                <string>Номер эксперимента</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -156,7 +176,7 @@ border-style: outset;</string>
                <string>№201</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -176,7 +196,7 @@ border-style: outset;</string>
                <string>Код органа</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -192,7 +212,7 @@ border-style: outset;</string>
                <string>01 (человек)</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -212,7 +232,7 @@ border-style: outset;</string>
                <string>Почка</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -228,7 +248,7 @@ border-style: outset;</string>
                <string>Правая</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -239,10 +259,10 @@ border-style: outset;</string>
         <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeType">
-           <enum>QSizePolicy::MinimumExpanding</enum>
+           <enum>QSizePolicy::Policy::MinimumExpanding</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -254,13 +274,6 @@ border-style: outset;</string>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_7">
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="text">
-             <string>Управление</string>
-            </property>
-           </widget>
-          </item>
           <item>
            <widget class="QPushButton" name="pushButton_7">
             <property name="text">
@@ -332,20 +345,39 @@ border-style: outset;</string>
                    <string>Давление</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit">
+                 <widget class="QLineEdit" name="le_pressure">
                   <property name="text">
-                   <string>30 мм рт. ст.</string>
+                   <string>30</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                   <property name="readOnly">
                    <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_23">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::Shape::StyledPanel</enum>
+                  </property>
+                  <property name="text">
+                   <string>мм рт.ст.</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -363,28 +395,47 @@ border-style: outset;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
-                    <height>200</height>
+                    <width>150</width>
+                    <height>150</height>
                    </size>
                   </property>
                   <property name="text">
                    <string>Скорость перф.</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_4">
+                 <widget class="QLineEdit" name="le_perfussion_speed">
                   <property name="text">
-                   <string>30 мл/мин</string>
+                   <string>30</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                   <property name="readOnly">
                    <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_26">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::Shape::StyledPanel</enum>
+                  </property>
+                  <property name="text">
+                   <string>мл/мин</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -402,34 +453,59 @@ border-style: outset;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>200</width>
-                    <height>200</height>
+                    <width>150</width>
+                    <height>150</height>
                    </size>
                   </property>
                   <property name="text">
                    <string>Сопротивление</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_3">
+                 <widget class="QLineEdit" name="le_resistance">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>0.5</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_27">
                   <property name="minimumSize">
                    <size>
                     <width>150</width>
                     <height>0</height>
                    </size>
                   </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::Shape::StyledPanel</enum>
+                  </property>
                   <property name="text">
-                   <string>0.5 мм рт. ст./мл/мин</string>
+                   <string>мм рт. ст./мл/мин</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="readOnly">
-                   <bool>true</bool>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -449,17 +525,17 @@ border-style: outset;</string>
                    <string>Режим работы</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_6">
+                 <widget class="QLineEdit" name="le_working_mode">
                   <property name="text">
                    <string>Перфузия</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                   <property name="readOnly">
                    <bool>true</bool>
@@ -482,20 +558,39 @@ border-style: outset;</string>
                    <string>Температура 1</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_7">
+                 <widget class="QLineEdit" name="le_temp1">
                   <property name="text">
-                   <string>10С</string>
+                   <string>10</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                   <property name="readOnly">
                    <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_28">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::Shape::StyledPanel</enum>
+                  </property>
+                  <property name="text">
+                   <string>°C</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -515,20 +610,39 @@ border-style: outset;</string>
                    <string>Температура 2</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_8">
+                 <widget class="QLineEdit" name="le_temp2">
                   <property name="text">
-                   <string>10С</string>
+                   <string>10</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                   <property name="readOnly">
                    <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_29">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="frameShape">
+                   <enum>QFrame::Shape::StyledPanel</enum>
+                  </property>
+                  <property name="text">
+                   <string>°C</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -548,17 +662,17 @@ border-style: outset;</string>
                    <string>Длительность</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_9">
+                 <widget class="QLineEdit" name="le_duration">
                   <property name="text">
                    <string>0:00:00</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                   <property name="readOnly">
                    <bool>true</bool>
@@ -579,13 +693,13 @@ border-style: outset;</string>
             <item>
              <widget class="QLabel" name="label_9">
               <property name="frameShape">
-               <enum>QFrame::Panel</enum>
+               <enum>QFrame::Shape::Panel</enum>
               </property>
               <property name="text">
                <string>ВНИМАНИЕ</string>
               </property>
               <property name="alignment">
-               <set>Qt::AlignCenter</set>
+               <set>Qt::AlignmentFlag::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -598,26 +712,26 @@ border-style: outset;</string>
                   <item>
                    <widget class="QLabel" name="label_13">
                     <property name="frameShape">
-                     <enum>QFrame::Panel</enum>
+                     <enum>QFrame::Shape::Panel</enum>
                     </property>
                     <property name="text">
                      <string>ДАВЛЕНИЕ</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignCenter</set>
+                     <set>Qt::AlignmentFlag::AlignCenter</set>
                     </property>
                    </widget>
                   </item>
                   <item>
                    <widget class="QLabel" name="label_10">
                     <property name="frameShape">
-                     <enum>QFrame::Panel</enum>
+                     <enum>QFrame::Shape::Panel</enum>
                     </property>
                     <property name="text">
                      <string>ВОЗДУХ</string>
                     </property>
                     <property name="alignment">
-                     <set>Qt::AlignCenter</set>
+                     <set>Qt::AlignmentFlag::AlignCenter</set>
                     </property>
                    </widget>
                   </item>
@@ -630,26 +744,26 @@ border-style: outset;</string>
                 <item>
                  <widget class="QLabel" name="label_14">
                   <property name="frameShape">
-                   <enum>QFrame::Panel</enum>
+                   <enum>QFrame::Shape::Panel</enum>
                   </property>
                   <property name="text">
                    <string>СОПРОТИВЛЕНИЕ</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QLabel" name="label_12">
                   <property name="frameShape">
-                   <enum>QFrame::Panel</enum>
+                   <enum>QFrame::Shape::Panel</enum>
                   </property>
                   <property name="text">
                    <string>ТЕМПЕРАТУРА 1</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -667,13 +781,13 @@ border-style: outset;</string>
                 <item>
                  <widget class="QLabel" name="label_11">
                   <property name="frameShape">
-                   <enum>QFrame::Panel</enum>
+                   <enum>QFrame::Shape::Panel</enum>
                   </property>
                   <property name="text">
                    <string>ТЕМПЕРАТУРА 2</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -703,7 +817,7 @@ border-style: outset;</string>
                  <string>Дата/Время</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -719,7 +833,7 @@ border-style: outset;</string>
                  <string>15:00:00 01-01-24</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -739,7 +853,7 @@ border-style: outset;</string>
                  <string>Номер эксперимента</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -749,7 +863,7 @@ border-style: outset;</string>
                  <string>№201</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -769,7 +883,7 @@ border-style: outset;</string>
                  <string>Код органа</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -779,7 +893,7 @@ border-style: outset;</string>
                  <string>01 (человек)</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -799,7 +913,7 @@ border-style: outset;</string>
                  <string>Почка</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -809,7 +923,7 @@ border-style: outset;</string>
                  <string>Правая</string>
                 </property>
                 <property name="alignment">
-                 <set>Qt::AlignCenter</set>
+                 <set>Qt::AlignmentFlag::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -842,8 +956,8 @@ border-style: outset;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>21</height>
+     <width>814</width>
+     <height>25</height>
     </rect>
    </property>
   </widget>

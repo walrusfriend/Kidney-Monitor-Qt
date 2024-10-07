@@ -24,7 +24,7 @@ private:
     Ui::MainWindow *ui;
 
     SerialCommunicator* m_communicator;
-    QThread* m_communicatorThread;
+    // QThread* m_communicatorThread;
 
     bool deviceConnected = false;
 
@@ -40,5 +40,6 @@ private:
     Q_SLOT void onDeviceConnected();
     Q_SLOT void onDeviceDisconnected();
     Q_SLOT void onLedColorChanged(LedColor color);
+    Q_SLOT void onNewReport(const ReportUnit& report);
 };
 #endif // MAINWINDOW_H

@@ -32,7 +32,7 @@ void SerialCommunicator::onSetPortOpen(const bool open)
                 this->serialPort->setStopBits(QSerialPort::OneStop)    &&
                 this->serialPort->setFlowControl(QSerialPort::NoFlowControl))
         {
-            if (this->serialPort->open(QIODevice::ReadWrite) && this->serialPort->setDataTerminalReady(true)) {
+            if (serialPort->open(QIODevice::ReadWrite) && serialPort->setDataTerminalReady(true)) {
                 Q_EMIT ledColorChanged(LedColor::GREEN);
                 Q_EMIT connected();
                 Q_EMIT queryVersion();
@@ -63,7 +63,8 @@ void SerialCommunicator::onReadyRead()
         data = this->serialPort->readLine();
 
         // Magic number 26 is a compressed input array size
-        if (data.size() < 26) {
+        // if (data.size() < 26) {
+        if (data.size() < 22) {
             continue;
         }
 
@@ -73,8 +74,8 @@ void SerialCommunicator::onReadyRead()
         QByteArray&& ba_flow = data.left(4);
         data.remove(0, 4);
 
-        QByteArray&& ba_resistance = data.left(4);
-        data.remove(0, 4);
+        // QByteArray&& ba_resistance = data.left(4);
+        // data.remove(0, 4);
 
         QByteArray&& ba_fill_value = data.left(4);
         data.remove(0, 4);
@@ -86,10 +87,12 @@ void SerialCommunicator::onReadyRead()
         data.remove(0, 4);
 
         memcpy(&report.flow, ba_flow.data(), sizeof(float));
-        memcpy(&report.resistance, ba_resistance.data(), sizeof(float));
+        // memcpy(&report.resistance, ba_resistance.data(), sizeof(float));
         memcpy(&report.fill_value, ba_fill_value.data(), sizeof(float));
         memcpy(&report.temp1, ba_temp1.data(), sizeof(float));
         memcpy(&report.temp2, ba_temp2.data(), sizeof(float));
+
+        report.resistance = report.fill_value / report.flow;
 
         /* Extract time */
         QByteArray&& ba_time = data.left(3);
@@ -110,11 +113,7 @@ void SerialCommunicator::onReadyRead()
             report.alert[i] = (alert_byte >> i) & 0b1;
         }
 
-        qDebug() << "Create report:\n" << report;
-
-
-
-        // Q_EMIT newReport(report);
+        Q_EMIT newReport(report);
     }
 }
 
