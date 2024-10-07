@@ -103,7 +103,7 @@ void SerialCommunicator::onReadyRead()
         uint8_t packed_byte = data.front();
         data.remove(0, 1);
 
-        report.regime = packed_byte & 0b111;
+        report.regime = (Regime)(packed_byte & 0b111);
         report.kidney_selector = (packed_byte >> 3) & 0b1;
         report.is_blocked = (packed_byte >> 4) & 0b1;
 

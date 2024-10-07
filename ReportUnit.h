@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <array>
 
+#include "Data_Types.h"
+
 class ReportUnit {
 public:
     float flow;
@@ -14,7 +16,7 @@ public:
     float temp1;
     float temp2;
     QTime time;
-    uint8_t regime;
+    Regime regime;
     bool kidney_selector;
     bool is_blocked;
 

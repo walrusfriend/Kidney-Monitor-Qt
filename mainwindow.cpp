@@ -199,5 +199,7 @@ void MainWindow::onNewReport(const ReportUnit& report) {
     ui->le_temp1->setText(QString::number(report.temp1));
     ui->le_temp2->setText(QString::number(report.temp2));
 
+    ui->le_working_mode->setText(RegimeMap.at(report.regime));
+
     ui->le_duration->setText(report.time.toString());
 }
