@@ -129,7 +129,7 @@ border-style: outset;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_17">
+             <widget class="QLineEdit" name="le_date_control">
               <property name="minimumSize">
                <size>
                 <width>150</width>
@@ -165,7 +165,7 @@ border-style: outset;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_16">
+             <widget class="QLineEdit" name="le_experiment_number_control">
               <property name="minimumSize">
                <size>
                 <width>150</width>
@@ -201,20 +201,7 @@ border-style: outset;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_12">
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>01 (человек)</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignmentFlag::AlignCenter</set>
-              </property>
-             </widget>
+             <widget class="QComboBox" name="cb_organ_code"/>
             </item>
            </layout>
           </item>
@@ -237,20 +224,7 @@ border-style: outset;</string>
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_5">
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Правая</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignmentFlag::AlignCenter</set>
-              </property>
-             </widget>
+             <widget class="QComboBox" name="cb_kidney_selector"/>
             </item>
            </layout>
           </item>
@@ -275,42 +249,42 @@ border-style: outset;</string>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
-           <widget class="QPushButton" name="pushButton_7">
+           <widget class="QPushButton" name="pb_start">
             <property name="text">
              <string>Начать работу (запись)</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_6">
+           <widget class="QPushButton" name="pb_pause">
             <property name="text">
              <string>Пауза</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_5">
+           <widget class="QPushButton" name="pb_regime_antibubble">
             <property name="text">
              <string>Включить промывку</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="pb_regime_perfusion">
             <property name="text">
              <string>Включить перфузию</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_3">
+           <widget class="QPushButton" name="pb_stop">
             <property name="text">
              <string>Завершить эксперимент (запись)</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="pb_export_result">
             <property name="text">
              <string>Экспортировать результаты</string>
             </property>
@@ -822,7 +796,7 @@ border-style: outset;</string>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_2">
+               <widget class="QLineEdit" name="le_date_param">
                 <property name="minimumSize">
                  <size>
                   <width>150</width>
@@ -834,6 +808,9 @@ border-style: outset;</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -858,12 +835,15 @@ border-style: outset;</string>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_14">
+               <widget class="QLineEdit" name="le_experiment_number_param">
                 <property name="text">
                  <string>№201</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -888,12 +868,15 @@ border-style: outset;</string>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_13">
+               <widget class="QLineEdit" name="le_organ_code">
                 <property name="text">
                  <string>01 (человек)</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -918,12 +901,15 @@ border-style: outset;</string>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit_10">
+               <widget class="QLineEdit" name="le_kindey_selector">
                 <property name="text">
                  <string>Правая</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>

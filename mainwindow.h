@@ -41,5 +41,12 @@ private:
     Q_SLOT void onDeviceDisconnected();
     Q_SLOT void onLedColorChanged(LedColor color);
     Q_SLOT void onNewReport(const ReportUnit& report);
+
+    Q_SLOT void onStartButtonClicked();
+    Q_SLOT void onPauseButtonClicked();
+    Q_SLOT void onRegimeAntibubbleButtonClicked();
+    Q_SLOT void onRegimePerfusionButtonClicked();
+    Q_SLOT void onStopButtonClicked();
+    Q_SLOT void onExportResultButtonClicked();
 };
 #endif // MAINWINDOW_H

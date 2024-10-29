@@ -12,15 +12,43 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->cb_kidney_selector->addItem("Правая");
+    ui->cb_kidney_selector->addItem("Левая");
+
+    ui->cb_organ_code->addItem("01 (Человек)");
+    ui->cb_organ_code->addItem("02 (Мыш))");
+
+
     connect(this, &MainWindow::setConnectionTarget, this->m_communicator,
             &SerialCommunicator::onSetConnectionTarget, Qt::QueuedConnection);
 
 
-    connect(ui->cb_device, &QComboBox::currentTextChanged,
-            this, &MainWindow::onDeviceComboCurrentTextChanged, Qt::QueuedConnection);
     connect(ui->btn_connect, &QPushButton::clicked,
             this, &MainWindow::onBtnConnectClicked, Qt::QueuedConnection);
+    connect(ui->pb_start, &QPushButton::clicked,
+            this, &MainWindow::onStartButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_pause, &QPushButton::clicked,
+            this, &MainWindow::onPauseButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_regime_antibubble, &QPushButton::clicked,
+            this, &MainWindow::onRegimeAntibubbleButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_regime_perfusion, &QPushButton::clicked,
+            this, &MainWindow::onRegimePerfusionButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_stop, &QPushButton::clicked,
+            this, &MainWindow::onStopButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_export_result, &QPushButton::clicked,
+            this, &MainWindow::onExportResultButtonClicked, Qt::QueuedConnection);
 
+    connect(ui->cb_device, &QComboBox::currentTextChanged,
+            this, &MainWindow::onDeviceComboCurrentTextChanged, Qt::QueuedConnection);
+    connect(ui->cb_kidney_selector, &QComboBox::currentTextChanged,
+            ui->le_kindey_selector, &QLineEdit::setText, Qt::QueuedConnection);
+    connect(ui->cb_organ_code, &QComboBox::currentTextChanged,
+            ui->le_organ_code, &QLineEdit::setText, Qt::QueuedConnection);
+
+    connect(ui->le_date_control, &QLineEdit::textChanged,
+            ui->le_date_param, &QLineEdit::setText, Qt::QueuedConnection);
+    connect(ui->le_experiment_number_control, &QLineEdit::textChanged,
+            ui->le_experiment_number_param, &QLineEdit::setText, Qt::QueuedConnection);
 
     connectCommunicator();
 
@@ -202,4 +230,32 @@ void MainWindow::onNewReport(const ReportUnit& report) {
     ui->le_working_mode->setText(RegimeMap.at(report.regime));
 
     ui->le_duration->setText(report.time.toString());
+}
+
+void MainWindow::onStartButtonClicked() {
+    qDebug() << "onStartButtonClicked";
+    m_communicator->onSendToPort("start\n");
+}
+
+void MainWindow::onPauseButtonClicked() {
+    qDebug() << "onPauseButtonClicked";
+    m_communicator->onSendToPort("pause\n");
+}
+
+void MainWindow::onRegimeAntibubbleButtonClicked() {
+    qDebug() << "onRegimeAntibubbleButtonClicked";
+}
+
+void MainWindow::onRegimePerfusionButtonClicked() {
+    qDebug() << "onRegimePerfusionButtonClicked";
+    m_communicator->onSendToPort("regime\n");
+}
+
+void MainWindow::onStopButtonClicked() {
+    qDebug() << "onStopButtonClicked";
+    m_communicator->onSendToPort("stop\n");
+}
+
+void MainWindow::onExportResultButtonClicked() {
+    qDebug() << "onExportResultButtonClicked";
 }
