@@ -267,6 +267,8 @@ void MainWindow::onNewReport(const ReportUnit& report) {
     ui->le_working_mode->setText(RegimeMap.at(report.regime));
 
     ui->le_duration->setText(report.time.toString());
+
+    history.push_back(report);
 }
 
 void MainWindow::onStartButtonClicked() {
@@ -281,11 +283,12 @@ void MainWindow::onPauseButtonClicked() {
 
 void MainWindow::onRegimeAntibubbleButtonClicked() {
     qDebug() << "onRegimeAntibubbleButtonClicked";
+    m_communicator->onSendToPort("regime 2\n");
 }
 
 void MainWindow::onRegimePerfusionButtonClicked() {
     qDebug() << "onRegimePerfusionButtonClicked";
-    m_communicator->onSendToPort("regime\n");
+    m_communicator->onSendToPort("regime 1\n");
 }
 
 void MainWindow::onStopButtonClicked() {
@@ -295,6 +298,9 @@ void MainWindow::onStopButtonClicked() {
 
 void MainWindow::onExportResultButtonClicked() {
     qDebug() << "onExportResultButtonClicked";
+
+    for (const ReportUnit& unit : history)
+        qDebug() << unit;
 }
 
 void MainWindow::onSyncDateTime() {

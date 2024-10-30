@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QVector>
+
 #include "SerialCommunicator.h"
 
 QT_BEGIN_NAMESPACE
@@ -29,6 +31,8 @@ private:
     bool deviceConnected = false;
 
     LedColor m_ledColor { GRAY };
+
+    QVector<ReportUnit> history;
 
 private:
     void connectCommunicator();
