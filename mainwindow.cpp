@@ -3,6 +3,10 @@
 #include <set>
 #include <QSerialPortInfo>
 #include <QComboBox>
+#include <QDateTime>
+#include <QtCharts/QChartView>
+#include <QtCharts/QLineSeries>
+#include <QtCharts/QValueAxis>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,6 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cb_organ_code->addItem("01 (Человек)");
     ui->cb_organ_code->addItem("02 (Мыш))");
 
+    onSyncDateTime();
+
+    drawTestChart();
 
     connect(this, &MainWindow::setConnectionTarget, this->m_communicator,
             &SerialCommunicator::onSetConnectionTarget, Qt::QueuedConnection);
@@ -37,6 +44,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onStopButtonClicked, Qt::QueuedConnection);
     connect(ui->pb_export_result, &QPushButton::clicked,
             this, &MainWindow::onExportResultButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_sync_date, &QPushButton::clicked,
+            this, &MainWindow::onSyncDateTime, Qt::QueuedConnection);
 
     connect(ui->cb_device, &QComboBox::currentTextChanged,
             this, &MainWindow::onDeviceComboCurrentTextChanged, Qt::QueuedConnection);
@@ -170,6 +179,34 @@ void MainWindow::disconnectCommunicator() {
     }
 }
 
+void MainWindow::drawTestChart()
+{
+    /* Draw test graph */
+    QLineSeries *series = new QLineSeries();
+    series->append(0, 6);
+    series->append(2, 4);
+    series->append(3, 8);
+    series->append(7, 4);
+    series->append(10, 5);
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    chart->createDefaultAxes();
+    chart->setTitle("График");
+
+    QChartView *chartView = new QChartView(chart);
+    chartView->setRenderHint(QPainter::Antialiasing);
+
+    // Добавьте chartView в ваш основной виджет
+    QWidget *tab = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout(tab);
+    layout->addWidget(chartView);
+    tab->setLayout(layout);
+
+    // Добавляем вкладку в QTabWidget
+    ui->tabWidget->addTab(tab, "Визуализация");
+}
+
 void MainWindow::onDeviceConnected() {
     if (ui->cb_device->currentText() != "" && ui->cb_device->currentText() != "Refresh") {
         ui->btn_connect->setText("Отключиться");
@@ -258,4 +295,9 @@ void MainWindow::onStopButtonClicked() {
 
 void MainWindow::onExportResultButtonClicked() {
     qDebug() << "onExportResultButtonClicked";
+}
+
+void MainWindow::onSyncDateTime() {
+    const QDateTime&& date = QDateTime::currentDateTime();
+    ui->le_date_control->setText(date.toString("dd.MM.yyyy hh:mm:ss"));
 }

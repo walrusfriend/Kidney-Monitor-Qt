@@ -33,6 +33,7 @@ private:
 private:
     void connectCommunicator();
     void disconnectCommunicator();
+    void drawTestChart();
 
     Q_SLOT void updateDeviceList();
     Q_SLOT void onDeviceComboCurrentTextChanged(const QString &text);
@@ -48,5 +49,6 @@ private:
     Q_SLOT void onRegimePerfusionButtonClicked();
     Q_SLOT void onStopButtonClicked();
     Q_SLOT void onExportResultButtonClicked();
+    Q_SLOT void onSyncDateTime();
 };
 #endif // MAINWINDOW_H
