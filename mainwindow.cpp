@@ -4,15 +4,13 @@
 #include <QSerialPortInfo>
 #include <QComboBox>
 #include <QDateTime>
-#include <QtCharts/QChartView>
-#include <QtCharts/QLineSeries>
-#include <QtCharts/QValueAxis>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_communicator(new SerialCommunicator())
     // , m_communicatorThread(new QThread(this))
+    , m_graph_tab(std::make_unique<GraphsTab>())
 {
     ui->setupUi(this);
 
@@ -24,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     onSyncDateTime();
 
-    drawTestChart();
 
     connect(this, &MainWindow::setConnectionTarget, this->m_communicator,
             &SerialCommunicator::onSetConnectionTarget, Qt::QueuedConnection);
@@ -63,6 +60,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     // m_communicator->moveToThread(m_communicatorThread);
     // m_communicatorThread->start();
+
+    /* Add tab with charts */
+    ui->tabWidget->addTab(m_graph_tab.get(), "Визуализация");
 
     /* Fill the combo box with COM ports */
     updateDeviceList();
@@ -179,34 +179,6 @@ void MainWindow::disconnectCommunicator() {
     }
 }
 
-void MainWindow::drawTestChart()
-{
-    /* Draw test graph */
-    QLineSeries *series = new QLineSeries();
-    series->append(0, 6);
-    series->append(2, 4);
-    series->append(3, 8);
-    series->append(7, 4);
-    series->append(10, 5);
-
-    QChart *chart = new QChart();
-    chart->addSeries(series);
-    chart->createDefaultAxes();
-    chart->setTitle("График");
-
-    QChartView *chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
-
-    // Добавьте chartView в ваш основной виджет
-    QWidget *tab = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(tab);
-    layout->addWidget(chartView);
-    tab->setLayout(layout);
-
-    // Добавляем вкладку в QTabWidget
-    ui->tabWidget->addTab(tab, "Визуализация");
-}
-
 void MainWindow::onDeviceConnected() {
     if (ui->cb_device->currentText() != "" && ui->cb_device->currentText() != "Refresh") {
         ui->btn_connect->setText("Отключиться");
@@ -268,36 +240,36 @@ void MainWindow::onNewReport(const ReportUnit& report) {
 
     ui->le_duration->setText(report.time.toString());
 
-    history.push_back(report);
+    history.emplace_back(report);
 }
 
 void MainWindow::onStartButtonClicked() {
-    qDebug() << "onStartButtonClicked";
+    // qDebug() << "onStartButtonClicked";
     m_communicator->onSendToPort("start\n");
 }
 
 void MainWindow::onPauseButtonClicked() {
-    qDebug() << "onPauseButtonClicked";
+    // qDebug() << "onPauseButtonClicked";
     m_communicator->onSendToPort("pause\n");
 }
 
 void MainWindow::onRegimeAntibubbleButtonClicked() {
-    qDebug() << "onRegimeAntibubbleButtonClicked";
+    // qDebug() << "onRegimeAntibubbleButtonClicked";
     m_communicator->onSendToPort("regime 2\n");
 }
 
 void MainWindow::onRegimePerfusionButtonClicked() {
-    qDebug() << "onRegimePerfusionButtonClicked";
+    // qDebug() << "onRegimePerfusionButtonClicked";
     m_communicator->onSendToPort("regime 1\n");
 }
 
 void MainWindow::onStopButtonClicked() {
-    qDebug() << "onStopButtonClicked";
+    // qDebug() << "onStopButtonClicked";
     m_communicator->onSendToPort("stop\n");
 }
 
 void MainWindow::onExportResultButtonClicked() {
-    qDebug() << "onExportResultButtonClicked";
+    // qDebug() << "onExportResultButtonClicked";
 
     for (const ReportUnit& unit : history)
         qDebug() << unit;

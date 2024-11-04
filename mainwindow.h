@@ -5,6 +5,7 @@
 #include <QVector>
 
 #include "SerialCommunicator.h"
+#include "GraphsTab.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,6 +28,7 @@ private:
 
     SerialCommunicator* m_communicator;
     // QThread* m_communicatorThread;
+    std::unique_ptr<GraphsTab> m_graph_tab;
 
     bool deviceConnected = false;
 
@@ -37,7 +39,6 @@ private:
 private:
     void connectCommunicator();
     void disconnectCommunicator();
-    void drawTestChart();
 
     Q_SLOT void updateDeviceList();
     Q_SLOT void onDeviceComboCurrentTextChanged(const QString &text);

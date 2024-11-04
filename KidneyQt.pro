@@ -16,6 +16,7 @@ CONFIG(debug, debug|release) {
 }
 
 SOURCES += \
+    GraphsTab.cpp \
     ReportUnit.cpp \
     SerialCommunicator.cpp \
     main.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     Data_Types.h \
+    GraphsTab.h \
     ReportUnit.h \
     SerialCommunicator.h \
     mainwindow.h
