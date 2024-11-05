@@ -15,12 +15,17 @@ class GraphsTab : public QWidget
     Q_OBJECT
 public:
     explicit GraphsTab(QWidget *parent = nullptr);
+    ~GraphsTab();
+
+private:
+    Q_SLOT void onCheckBoxStateChanged(const Qt::CheckState& state);
 
 private:
     std::unique_ptr<QLineSeries> m_series;
     std::unique_ptr<QChart> m_chart;
     std::unique_ptr<QChartView> m_chartView;
 
+    std::array<QLineSeries*, 6> test_series;
     std::array<QCheckBox*, 6> cb_array;
 
     enum DisplayedOptions {
