@@ -10,6 +10,9 @@
 
 class ReportUnit {
 public:
+    friend QTextStream& operator<<(QTextStream& stream, const ReportUnit& reportUnit);
+
+public:
     float flow;
     float resistance;
     float fill_value;
