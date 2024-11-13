@@ -60,10 +60,9 @@ void SerialCommunicator::onReadyRead()
 {
     QByteArray data;
     while (this->serialPort->canReadLine()) {
-        data = this->serialPort->readLine();
+        data += this->serialPort->readLine();
 
-        // Magic number 26 is a compressed input array size
-        // if (data.size() < 26) {
+        // Magic number 22 is a compressed input array size
         if (data.size() < 22) {
             continue;
         }
