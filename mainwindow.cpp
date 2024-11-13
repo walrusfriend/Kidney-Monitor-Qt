@@ -20,9 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->cb_organ_code->addItem("01 (Человек)");
     ui->cb_organ_code->addItem("02 (Мыш))");
 
-    onSyncDateTime();
-
-
     connect(this, &MainWindow::setConnectionTarget, this->m_communicator,
             &SerialCommunicator::onSetConnectionTarget, Qt::QueuedConnection);
 
@@ -63,6 +60,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     // m_communicator->moveToThread(m_communicatorThread);
     // m_communicatorThread->start();
+
+    onSyncDateTime();
 
     /* Add tab with charts */
     ui->tabWidget->addTab(m_graph_tab.get(), "Визуализация");
@@ -289,6 +288,12 @@ void MainWindow::onNewReport(const ReportUnit& report) {
 
 void MainWindow::onStartButtonClicked() {
     // qDebug() << "onStartButtonClicked";
+    if (is_new_experiment) {
+        history.clear();
+        m_graph_tab->clear();
+        is_new_experiment = false;
+    }
+
     m_communicator->onSendToPort("start\n");
 }
 
@@ -310,6 +315,7 @@ void MainWindow::onRegimePerfusionButtonClicked() {
 void MainWindow::onStopButtonClicked() {
     // qDebug() << "onStopButtonClicked";
     m_communicator->onSendToPort("stop\n");
+    is_new_experiment = true;
 }
 
 void MainWindow::onExportResultButtonClicked() {
@@ -322,4 +328,5 @@ void MainWindow::onExportResultButtonClicked() {
 void MainWindow::onSyncDateTime() {
     const QDateTime&& date = QDateTime::currentDateTime();
     ui->le_date_control->setText(date.toString("dd.MM.yyyy hh:mm:ss"));
+    emit ui->le_date_control->textChanged(ui->le_date_control->text());
 }

@@ -101,6 +101,8 @@ public:
     explicit GraphsTab(QWidget *parent = nullptr);
     ~GraphsTab();
 
+    void clear();
+
     Q_SLOT void addDataToChart(const ReportUnit& unit);
 
 private:

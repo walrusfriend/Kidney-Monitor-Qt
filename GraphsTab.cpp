@@ -72,6 +72,12 @@ GraphsTab::~GraphsTab() {
     }
 }
 
+void GraphsTab::clear()
+{
+    for (auto s : test_series)
+        s->clear();
+}
+
 void GraphsTab::addDataToChart(const ReportUnit &unit)
 {
 

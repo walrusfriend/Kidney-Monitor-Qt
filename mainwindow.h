@@ -34,6 +34,7 @@ private:
 
     LedColor m_ledColor { GRAY };
 
+    bool is_new_experiment = true;
     QVector<ReportUnit> history;
 
 private:
