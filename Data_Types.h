@@ -26,7 +26,6 @@ const std::unordered_map<Regime, QString> RegimeMap {
 
 enum AlertType
 {
-    NONE,
     PRESSURE_LOW,
     PRESSURE_HIGH,
     PRESSURE_UP,

@@ -184,22 +184,37 @@ void MainWindow::disconnectCommunicator() {
 
 void MainWindow::paintAlertLabels(const std::array<bool, 8> &alert)
 {
-    if (alert[AlertType::NONE]) {
-        ui->alert_air->setStyleSheet("background-color: lightblue;");
-        ui->alert_pressure->setStyleSheet("background-color: lightblue;");
-        ui->alert_resistance->setStyleSheet("background-color: lightblue;");
-        ui->alert_temp1->setStyleSheet("background-color: lightblue;");
-        ui->alert_temp2->setStyleSheet("background-color: lightblue;");
-    }
+    ui->alert_attention->setStyleSheet("background-color: none;");
+    ui->alert_air->setStyleSheet("background-color: none;");
+    ui->alert_pressure->setStyleSheet("background-color: none;");
+    ui->alert_resistance->setStyleSheet("background-color: none;");
+    ui->alert_temp1->setStyleSheet("background-color: none;");
+    ui->alert_temp2->setStyleSheet("background-color: none;");
 
     if (alert[AlertType::PRESSURE_HIGH] or
-        alert[AlertType::PRESSURE_LOW])
-    {
+        alert[AlertType::PRESSURE_LOW]){
         ui->alert_pressure->setStyleSheet("background-color: red;");
+        ui->alert_attention->setStyleSheet("background-color: red;");
     }
 
-    if (alert[AlertType::PRESSURE_UP]) {
+    if (alert[AlertType::PRESSURE_UP]){
         ui->alert_pressure->setStyleSheet("background-color: yellow;");
+        ui->alert_attention->setStyleSheet("background-color: red;");
+    }
+
+    if (alert[AlertType::TEMP1_HIGH] or alert[AlertType::TEMP1_LOW]){
+        ui->alert_temp1->setStyleSheet("background-color: red;");
+        ui->alert_attention->setStyleSheet("background-color: red;");
+    }
+
+    if (alert[AlertType::TEMP2_HIGH] or alert[AlertType::TEMP2_LOW]){
+        ui->alert_temp2->setStyleSheet("background-color: red;");
+        ui->alert_attention->setStyleSheet("background-color: red;");
+    }
+
+    if (alert[AlertType::RESISTANCE]){
+        ui->alert_resistance->setStyleSheet("background-color: red;");
+        ui->alert_attention->setStyleSheet("background-color: red;");
     }
 }
 
