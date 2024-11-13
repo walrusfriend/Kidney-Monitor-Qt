@@ -39,6 +39,9 @@ private:
 private:
     void connectCommunicator();
     void disconnectCommunicator();
+    void paintAlertLabels(const std::array<bool, 8>& alert);
+
+    Q_SIGNAL void drawDataToChart(const ReportUnit& unit);
 
     Q_SLOT void updateDeviceList();
     Q_SLOT void onDeviceComboCurrentTextChanged(const QString &text);

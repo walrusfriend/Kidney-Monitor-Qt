@@ -24,6 +24,39 @@ const std::unordered_map<Regime, QString> RegimeMap {
     {Regime::REMOVE_BUBBLE, "Удаление пузырьков"}
 };
 
+enum AlertType
+{
+    NONE,
+    PRESSURE_LOW,
+    PRESSURE_HIGH,
+    PRESSURE_UP,
+    TEMP1_LOW,
+    TEMP1_HIGH,
+    TEMP2_LOW,
+    TEMP2_HIGH,
+    RESISTANCE
+};
+
+namespace Graphs {
+    enum DisplayedOptions {
+        PRESSURE = 0,
+        PERFUSION_SPEED,
+        RESISTANCE,
+        REGIME,
+        TEMP1,
+        TEMP2
+    };
+
+    const std::unordered_map<DisplayedOptions, QString> graphs_names_map {
+        {DisplayedOptions::PRESSURE, "Давление"},
+        {DisplayedOptions::PERFUSION_SPEED, "Скорость перфузии"},
+        {DisplayedOptions::RESISTANCE, "Сопротивление"},
+        {DisplayedOptions::REGIME, "Режим работы"},
+        {DisplayedOptions::TEMP1, "Температура 1"},
+        {DisplayedOptions::TEMP2, "Температура 2"}
+    };
+}
+
 Q_DECLARE_METATYPE(LedColor)
 
 #endif // DATA_TYPES_H

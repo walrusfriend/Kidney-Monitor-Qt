@@ -56,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->le_experiment_number_control, &QLineEdit::textChanged,
             ui->le_experiment_number_param, &QLineEdit::setText, Qt::QueuedConnection);
 
+    connect(this, &MainWindow::drawDataToChart,
+            m_graph_tab.get(), &GraphsTab::addDataToChart, Qt::QueuedConnection);
+
     connectCommunicator();
 
     // m_communicator->moveToThread(m_communicatorThread);
@@ -179,6 +182,27 @@ void MainWindow::disconnectCommunicator() {
     }
 }
 
+void MainWindow::paintAlertLabels(const std::array<bool, 8> &alert)
+{
+    if (alert[AlertType::NONE]) {
+        ui->alert_air->setStyleSheet("background-color: lightblue;");
+        ui->alert_pressure->setStyleSheet("background-color: lightblue;");
+        ui->alert_resistance->setStyleSheet("background-color: lightblue;");
+        ui->alert_temp1->setStyleSheet("background-color: lightblue;");
+        ui->alert_temp2->setStyleSheet("background-color: lightblue;");
+    }
+
+    if (alert[AlertType::PRESSURE_HIGH] or
+        alert[AlertType::PRESSURE_LOW])
+    {
+        ui->alert_pressure->setStyleSheet("background-color: red;");
+    }
+
+    if (alert[AlertType::PRESSURE_UP]) {
+        ui->alert_pressure->setStyleSheet("background-color: yellow;");
+    }
+}
+
 void MainWindow::onDeviceConnected() {
     if (ui->cb_device->currentText() != "" && ui->cb_device->currentText() != "Refresh") {
         ui->btn_connect->setText("Отключиться");
@@ -230,16 +254,21 @@ void MainWindow::onLedColorChanged(LedColor color)
 void MainWindow::onNewReport(const ReportUnit& report) {
     qDebug() << report;
 
+    /* Update UI fields */
     ui->le_pressure->setText(QString::number(report.fill_value));
     ui->le_resistance->setText(QString::number(report.resistance));
     ui->le_perfussion_speed->setText(QString::number(report.flow));
     ui->le_temp1->setText(QString::number(report.temp1));
     ui->le_temp2->setText(QString::number(report.temp2));
-
     ui->le_working_mode->setText(RegimeMap.at(report.regime));
-
     ui->le_duration->setText(report.time.toString());
 
+    paintAlertLabels(report.alert);
+
+    /* Update graph */
+    emit drawDataToChart(report);
+
+    /* Store report in memory */
     history.emplace_back(report);
 }
 
