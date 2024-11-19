@@ -81,7 +81,7 @@ void GraphsTab::clear()
 void GraphsTab::addDataToChart(const ReportUnit &unit)
 {
 
-    uint64_t current_time_sec = unit.time.hour() * 60 * 60 +
+    int64_t current_time_sec = unit.time.hour() * 60 * 60 +
                                 unit.time.minute() * 60 +
                                 unit.time.second();
 
@@ -116,8 +116,20 @@ void GraphsTab::addDataToChart(const ReportUnit &unit)
     m_chartView->updateXmax(std::max(m_chartView->getXmax(), current_time_sec));
     m_chartView->getXaxis()->setRange(0, m_chartView->getXmax());
 
-    std::vector<float> vec_to_compare = {unit.fill_value, unit.flow, unit.temp1, unit.temp2};
+    // std::vector<float> vec_to_compare = {unit.fill_value, unit.flow, unit.temp1, unit.temp2, static_cast<float>(unit.regime), unit.resistance};
+    std::array<float, number_of_charts>&& ref_array = {unit.fill_value, unit.flow, unit.resistance, static_cast<float>(unit.regime), unit.temp1, unit.temp2};
+    std::vector<float> vec_to_compare;
+
+    /* Filter disabled charts */
+    for (uint8_t i = 0; i < number_of_charts; ++i) {
+        if (cb_array[i]->checkState() != Qt::Checked)
+            continue;
+
+        vec_to_compare.push_back(ref_array[i]);
+    }
+
     uint64_t curr_max = static_cast<uint64_t>(*std::max_element(vec_to_compare.begin(), vec_to_compare.end()));
+
     const uint64_t& old_max = m_chartView->getYmax();
     if (curr_max > old_max - 1) {
         m_chartView->updateYmax(curr_max + 1);
@@ -136,12 +148,37 @@ void GraphsTab::onCheckBoxStateChanged(const Qt::CheckState& state)
         return;
     }
 
+    /* Service lambda for some std functions */
+    auto QPoint_compare_lambda = [](const QPointF& a, const QPointF& b) {
+        return a.y() < b.y();
+    };
+
+    /* Find Y max from only displyed charts */
+    int64_t local_ymin = INT_MAX;
+    int64_t local_ymax = INT_MIN;
+
+    for (uint8_t i = 0; i < cb_array.size(); ++i) {
+        if (cb_array[i]->checkState() != Qt::Checked)
+            continue;
+
+        /* Try to find new max and min values */
+        QList<QPointF>&& points_list = test_series[i]->points();
+        qreal&& curr_ymin = std::min_element(points_list.begin(), points_list.end(), QPoint_compare_lambda)->y();
+        qreal&& curr_ymax = std::max_element(points_list.begin(), points_list.end(), QPoint_compare_lambda)->y();
+
+        /* Update local min/max */
+        local_ymin = std::min(local_ymin, static_cast<int64_t>(qRound(curr_ymin - 1)));
+        local_ymax = std::max(local_ymax, static_cast<int64_t>(qRound(curr_ymax + 1)));
+    }
+
+    /* Update global min/max */
+    m_chartView->updateYmin(local_ymin);
+    m_chartView->updateYmax(local_ymax);
+
     const int&& cb_index = std::distance(cb_array.begin(), it);
 
     if (state) {
         m_chart->addSeries(test_series[cb_index]);
-        m_chart->axes()[0]->setRange(0, m_chartView->getXmax());
-        m_chart->axes()[1]->setRange(0, m_chartView->getYmax());
         test_series[cb_index]->attachAxis(m_chartView->getXaxis());
         test_series[cb_index]->attachAxis(m_chartView->getYaxis());
     }
@@ -149,4 +186,6 @@ void GraphsTab::onCheckBoxStateChanged(const Qt::CheckState& state)
         m_chart->removeSeries(test_series[cb_index]);
     }
 
+    m_chart->axes()[0]->setRange(0, m_chartView->getXmax());
+    m_chart->axes()[1]->setRange(m_chartView->getYmin(), m_chartView->getYmax());
 }

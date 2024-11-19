@@ -31,10 +31,15 @@ public:
         axisY->setRange(0, ymax);
     }
 
-    void updateXmax(const uint64_t& new_max) { xmax = new_max; }
-    void updateYmax(const uint64_t& new_max) { ymax = new_max; }
-    const uint64_t& getXmax() const { return xmax; }
-    const uint64_t& getYmax() const { return ymax; }
+    void updateXmin(const int64_t& new_min) { xmin = new_min; }
+    void updateXmax(const int64_t& new_max) { xmax = new_max; }
+    void updateYmin(const int64_t& new_min) { ymin = new_min; }
+    void updateYmax(const int64_t& new_max) { ymax = new_max; }
+
+    const int64_t& getXmin() const { return xmin; }
+    const int64_t& getXmax() const { return xmax; }
+    const int64_t& getYmin() const { return ymin; }
+    const int64_t& getYmax() const { return ymax; }
 
     QAbstractAxis* getXaxis() const { return axisX.get(); }
     QAbstractAxis* getYaxis() const { return axisY.get(); }
@@ -70,8 +75,8 @@ protected:
             auto *axisX = chart()->axes(Qt::Horizontal).front();
             auto *axisY = chart()->axes(Qt::Vertical).front();
 
-            axisX->setRange(0, xmax + 1);
-            axisY->setRange(0, ymax + 1);
+            axisX->setRange(0, xmax);
+            axisY->setRange(ymin, ymax);
         }
         QChartView::mouseReleaseEvent(event);
     }
@@ -90,8 +95,10 @@ private:
     std::unique_ptr<QValueAxis> axisX;
     std::unique_ptr<QValueAxis> axisY;
 
-    uint64_t xmax = 5;
-    uint64_t ymax = 30;
+    int64_t xmin = 0;
+    int64_t xmax = 5;
+    int64_t ymin = 0;
+    int64_t ymax = 30;
 };
 
 class GraphsTab : public QWidget
@@ -108,11 +115,13 @@ public:
 private:
     Q_SLOT void onCheckBoxStateChanged(const Qt::CheckState& state);
 
-public:
+// public:
+    static const uint8_t number_of_charts = 6;
+
     std::unique_ptr<QChart> m_chart;
     std::unique_ptr<ChartView> m_chartView;
-    std::array<QLineSeries*, 6> test_series;
-    std::array<QCheckBox*, 6> cb_array;
+    std::array<QLineSeries*, number_of_charts> test_series;
+    std::array<QCheckBox*, number_of_charts> cb_array;
 };
 
 #endif // GRAPHSTAB_H
