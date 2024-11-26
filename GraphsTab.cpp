@@ -138,13 +138,19 @@ void GraphsTab::addDataToChart(const ReportUnit &unit)
 }
 
 void GraphsTab::onCheckBoxStateChanged(const Qt::CheckState& state)
-{
+{    
     QCheckBox* cb = qobject_cast<QCheckBox*>(sender());
 
     auto&& it = std::find(cb_array.begin(), cb_array.end(), cb);
 
     if (it == cb_array.end()) {
         qDebug() << "ERROR - GraphsTab::onCheckBoxStateChanged - Can't find check box in checkbox array";
+        return;
+    }
+
+    /* Check that LineSeries is not empty */
+    if (test_series[std::distance(cb_array.begin(), it)]->count() == 0) {
+        // qDebug() << "ERROR - GraphsTab::onCheckBoxStateChanged - Try to use empty graph line series";
         return;
     }
 
