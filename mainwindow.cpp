@@ -47,6 +47,14 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onExportResultButtonClicked, Qt::QueuedConnection);
     connect(ui->pb_sync_date, &QPushButton::clicked,
             this, &MainWindow::onSyncDateTime, Qt::QueuedConnection);
+    connect(ui->pb_pump_rpm, &QPushButton::clicked,
+            this, &MainWindow::onPumpRpmButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_tare_pressure, &QPushButton::clicked,
+            this, &MainWindow::onTarePressureButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_perfussion_rate, &QPushButton::clicked,
+            this, &MainWindow::onPerfussionSpeedRatioButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_pressure_target, &QPushButton::clicked,
+            this, &MainWindow::onPressureTargetValueButtonClicked, Qt::QueuedConnection);
 
     connect(ui->cb_device, &QComboBox::currentTextChanged,
             this, &MainWindow::onDeviceComboCurrentTextChanged, Qt::QueuedConnection);
@@ -378,4 +386,20 @@ void MainWindow::onSyncDateTime() {
     const QDateTime&& date = QDateTime::currentDateTime();
     ui->le_date_control->setText(date.toString("dd.MM.yyyy hh:mm:ss"));
     emit ui->le_date_control->textChanged(ui->le_date_control->text());
+}
+
+void MainWindow::onPumpRpmButtonClicked() {
+    m_communicator->onSendToPort("set_speed " + ui->le_pump_rpm->text() + '\n');
+}
+
+void MainWindow::onPerfussionSpeedRatioButtonClicked() {
+    m_communicator->onSendToPort("set_perfussion_speed_ratio " + ui->le_perfussion_rate->text() + '\n');
+}
+
+void MainWindow::onPressureTargetValueButtonClicked() {
+    m_communicator->onSendToPort("tare_pressure\n");
+}
+
+void MainWindow::onTarePressureButtonClicked() {
+    m_communicator->onSendToPort("set_tv " + ui->le_pressure_target->text() + '\n');
 }

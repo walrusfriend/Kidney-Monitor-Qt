@@ -59,5 +59,9 @@ private:
     Q_SLOT void onStopButtonClicked();
     Q_SLOT void onExportResultButtonClicked();
     Q_SLOT void onSyncDateTime();
+    Q_SLOT void onPumpRpmButtonClicked();
+    Q_SLOT void onPerfussionSpeedRatioButtonClicked();
+    Q_SLOT void onPressureTargetValueButtonClicked();
+    Q_SLOT void onTarePressureButtonClicked();
 };
 #endif // MAINWINDOW_H
