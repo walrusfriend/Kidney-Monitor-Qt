@@ -20,6 +20,17 @@ QTextStream& operator<<(QTextStream& stream, const ReportUnit& reportUnit) {
     }
 
     stream << "])\n";
+    stream << "peripheral status: [";
+
+    for (size_t i = 0; i < reportUnit.peripheral_status.size(); ++i) {
+        stream << (reportUnit.peripheral_status[i] ? "true" : "false");
+
+        if (i < reportUnit.peripheral_status.size() - 1)
+            stream << ", ";
+
+    }
+    stream << "])\n";
+
     return stream;
 }
 
@@ -44,6 +55,16 @@ QDebug operator<<(QDebug debug, const ReportUnit &reportUnit) {
         }
     }
 
+    debug.nospace() << "])\n";
+    debug.nospace() << "peripheral status: [";
+
+    for (size_t i = 0; i < reportUnit.peripheral_status.size(); ++i) {
+        debug.nospace() << (reportUnit.peripheral_status[i] ? "true" : "false");
+
+        if (i < reportUnit.peripheral_status.size() - 1)
+            debug.nospace() << ", ";
+
+    }
     debug.nospace() << "])\n";
 
     return debug;

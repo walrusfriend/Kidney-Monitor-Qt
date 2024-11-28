@@ -112,6 +112,13 @@ void SerialCommunicator::onReadyRead()
             report.alert[i] = (alert_byte >> i) & 0b1;
         }
 
+        data.remove(0, 1);
+
+        uint8_t packed_peripheral_status = data.front();
+        for (size_t i = 0; i < report.peripheral_status.size(); ++i) {
+            report.peripheral_status[i] = (packed_peripheral_status >> i) & 0b1;
+        }
+
         Q_EMIT newReport(report);
     }
 }

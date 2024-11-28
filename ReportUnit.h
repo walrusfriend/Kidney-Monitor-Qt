@@ -24,6 +24,7 @@ public:
     bool is_blocked;
 
     std::array<bool, 8> alert;
+    std::array<bool, 4> peripheral_status;
 };
 
 QDebug operator<<(QDebug debug, const ReportUnit &reportUnit);

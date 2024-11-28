@@ -84,7 +84,7 @@ border-style: outset;</string>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -1149,11 +1149,7 @@ border-style: outset;</string>
            </layout>
           </item>
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_8">
-            <item>
-             <widget class="QWidget" name="widget" native="true"/>
-            </item>
-           </layout>
+           <layout class="QVBoxLayout" name="verticalLayout_8"/>
           </item>
          </layout>
         </item>
