@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QCheckBox>
 #include <QApplication>
+#include <QPushButton>
 
 #include "ReportUnit.h"
 
@@ -114,14 +115,17 @@ public:
 
 private:
     Q_SLOT void onCheckBoxStateChanged(const Qt::CheckState& state);
+    Q_SLOT void onClearButtonClicked();
 
-// public:
+private:
     static const uint8_t number_of_charts = 6;
 
     std::unique_ptr<QChart> m_chart;
     std::unique_ptr<ChartView> m_chartView;
     std::array<QLineSeries*, number_of_charts> test_series;
     std::array<QCheckBox*, number_of_charts> cb_array;
+
+    std::unique_ptr<QPushButton> pb_clear;
 };
 
 #endif // GRAPHSTAB_H

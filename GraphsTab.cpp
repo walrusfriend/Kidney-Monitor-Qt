@@ -57,6 +57,13 @@ GraphsTab::GraphsTab(QWidget *parent)
                 this, &GraphsTab::onCheckBoxStateChanged, Qt::QueuedConnection);
     }
 
+    /* Add clear button */
+    pb_clear = std::make_unique<QPushButton>("Очистить график", this);
+    connect(pb_clear.get(), &QPushButton::clicked,
+            this, &GraphsTab::onClearButtonClicked, Qt::QueuedConnection);
+
+    checkbox_layout->addWidget(pb_clear.get());
+
     main_layout->addLayout(checkbox_layout);
     main_layout->addWidget(m_chartView.get());
     setLayout(main_layout);
@@ -194,4 +201,10 @@ void GraphsTab::onCheckBoxStateChanged(const Qt::CheckState& state)
 
     m_chart->axes()[0]->setRange(0, m_chartView->getXmax());
     m_chart->axes()[1]->setRange(m_chartView->getYmin(), m_chartView->getYmax());
+}
+
+void GraphsTab::onClearButtonClicked()
+{
+    for (auto& series : test_series)
+        series->clear();
 }
