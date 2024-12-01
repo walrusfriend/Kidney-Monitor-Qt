@@ -19,6 +19,10 @@ GraphsTab::GraphsTab(QWidget *parent)
     for (size_t i = 0; i < test_series.size(); ++i) {
         test_series[i] = new QLineSeries(this);
 
+        /* TODO: Delete - generate test line series */
+        for (uint8_t j = 0; j < 50; ++j)
+            test_series[i]->append(j, QRandomGenerator::global()->bounded(0, 50));
+
         m_chart->addSeries(test_series[i]);
 
         test_series[i]->setName(Graphs::graphs_names_map.at(static_cast<Graphs::DisplayedOptions>(i)));        
