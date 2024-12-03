@@ -14,14 +14,16 @@ enum Regime {
     STOPED,
     REGIME1,
     REGIME2,
-    REMOVE_BUBBLE
+    REMOVE_BUBBLE,
+    BLOCKED
 };
 
 const std::unordered_map<Regime, QString> RegimeMap {
     {Regime::STOPED, "Остановлен"},
     {Regime::REGIME1, "Перфузия"},
     {Regime::REGIME2, "Промывка"},
-    {Regime::REMOVE_BUBBLE, "Удаление пузырьков"}
+    {Regime::REMOVE_BUBBLE, "Удаление пузырьков"},
+    {Regime::BLOCKED, "Аварийная остановка"}
 };
 
 enum AlertType

@@ -19,9 +19,9 @@ GraphsTab::GraphsTab(QWidget *parent)
     for (size_t i = 0; i < test_series.size(); ++i) {
         test_series[i] = new QLineSeries(this);
 
-        /* TODO: Delete - generate test line series */
-        for (uint8_t j = 0; j < 50; ++j)
-            test_series[i]->append(j, QRandomGenerator::global()->bounded(0, 50));
+        // /* TODO: Delete - generate test line series */
+        // for (uint8_t j = 0; j < 50; ++j)
+        //     test_series[i]->append(j, QRandomGenerator::global()->bounded(0, 50));
 
         m_chart->addSeries(test_series[i]);
 
@@ -87,16 +87,15 @@ void GraphsTab::clear()
 {
     for (auto s : test_series)
         s->clear();
+    message_counter = 0;
 }
 
 void GraphsTab::addDataToChart(const ReportUnit &unit)
 {
 
-    int64_t current_time_sec = unit.time.hour() * 60 * 60 +
-                                unit.time.minute() * 60 +
-                                unit.time.second();
-
-    qDebug() << current_time_sec;
+    // int64_t current_time_sec = unit.time.hour() * 60 * 60 +
+    //                             unit.time.minute() * 60 +
+    //                             unit.time.second();
 
     /* TODO: Maybe add slicing window for N element to display */
     // if (test_series[Graphs::DisplayedOptions::PRESSURE]->count() > 50) {
@@ -106,25 +105,25 @@ void GraphsTab::addDataToChart(const ReportUnit &unit)
 
     /* Add data to graph */
     test_series[Graphs::DisplayedOptions::PRESSURE]->
-        append(current_time_sec, unit.fill_value);
+        append(message_counter, unit.fill_value);
 
     test_series[Graphs::DisplayedOptions::PERFUSION_SPEED]->
-        append(current_time_sec, unit.flow);
+        append(message_counter, unit.flow);
 
     test_series[Graphs::DisplayedOptions::REGIME]->
-        append(current_time_sec, unit.regime);
+        append(message_counter, unit.regime);
 
     test_series[Graphs::DisplayedOptions::RESISTANCE]->
-        append(current_time_sec, unit.resistance);
+        append(message_counter, unit.resistance);
 
     test_series[Graphs::DisplayedOptions::TEMP1]->
-        append(current_time_sec, unit.temp1);
+        append(message_counter, unit.temp1);
 
     test_series[Graphs::DisplayedOptions::TEMP2]->
-        append(current_time_sec, unit.temp2);
+        append(message_counter, unit.temp2);
 
     /* Update axes */
-    m_chartView->updateXmax(std::max(m_chartView->getXmax(), current_time_sec));
+    m_chartView->updateXmax(std::max(m_chartView->getXmax(), static_cast<int64_t>(message_counter)));
     m_chartView->getXaxis()->setRange(0, m_chartView->getXmax());
 
     // std::vector<float> vec_to_compare = {unit.fill_value, unit.flow, unit.temp1, unit.temp2, static_cast<float>(unit.regime), unit.resistance};
@@ -139,13 +138,19 @@ void GraphsTab::addDataToChart(const ReportUnit &unit)
         vec_to_compare.push_back(ref_array[i]);
     }
 
-    uint64_t curr_max = static_cast<uint64_t>(*std::max_element(vec_to_compare.begin(), vec_to_compare.end()));
+    uint64_t curr_max = 0;
+
+    if (vec_to_compare.size() > 0) {
+        curr_max = static_cast<uint64_t>(*std::max_element(vec_to_compare.begin(), vec_to_compare.end()));
+    }
 
     const uint64_t& old_max = m_chartView->getYmax();
     if (curr_max > old_max - 1) {
         m_chartView->updateYmax(curr_max + 1);
         m_chartView->getYaxis()->setRange(0, curr_max + 1);
     }
+
+    ++message_counter;
 }
 
 void GraphsTab::onCheckBoxStateChanged(const Qt::CheckState& state)
@@ -211,4 +216,6 @@ void GraphsTab::onClearButtonClicked()
 {
     for (auto& series : test_series)
         series->clear();
+
+    message_counter = 0;
 }

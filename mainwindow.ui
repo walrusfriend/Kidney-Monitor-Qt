@@ -84,7 +84,7 @@ border-style: outset;</string>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -478,6 +478,18 @@ border-style: outset;</string>
                <property name="text">
                 <string>Тарировать
 давление</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_28">
+             <item>
+              <widget class="QPushButton" name="pb_enulate_bubble">
+               <property name="text">
+                <string>Имитация пузырька
+в магистрали</string>
                </property>
               </widget>
              </item>

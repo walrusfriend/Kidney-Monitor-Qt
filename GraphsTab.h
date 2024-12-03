@@ -112,10 +112,10 @@ public:
     void clear();
 
     Q_SLOT void addDataToChart(const ReportUnit& unit);
+    Q_SLOT void onClearButtonClicked();
 
 private:
     Q_SLOT void onCheckBoxStateChanged(const Qt::CheckState& state);
-    Q_SLOT void onClearButtonClicked();
 
 private:
     static const uint8_t number_of_charts = 6;
@@ -126,6 +126,8 @@ private:
     std::array<QCheckBox*, number_of_charts> cb_array;
 
     std::unique_ptr<QPushButton> pb_clear;
+
+    uint64_t message_counter = 0;
 };
 
 #endif // GRAPHSTAB_H

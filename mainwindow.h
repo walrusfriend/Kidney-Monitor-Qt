@@ -63,5 +63,6 @@ private:
     Q_SLOT void onPerfussionSpeedRatioButtonClicked();
     Q_SLOT void onPressureTargetValueButtonClicked();
     Q_SLOT void onTarePressureButtonClicked();
+    Q_SLOT void onEmulateBubbleButtonClicked();
 };
 #endif // MAINWINDOW_H

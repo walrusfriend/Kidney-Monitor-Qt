@@ -62,8 +62,9 @@ void SerialCommunicator::onReadyRead()
     while (this->serialPort->canReadLine()) {
         data += this->serialPort->readLine();
 
-        // Magic number 22 is a compressed input array size
-        if (data.size() < 22) {
+        // Magic number 23 is a compressed input array size
+        // if (data.size() < 23) {
+        if (data.size() < 27) {
             continue;
         }
 
@@ -118,6 +119,16 @@ void SerialCommunicator::onReadyRead()
         for (size_t i = 0; i < report.peripheral_status.size(); ++i) {
             report.peripheral_status[i] = (packed_peripheral_status >> i) & 0b1;
         }
+
+        data.remove(0, 1);
+
+        QByteArray&& ba_target = data.left(4);
+        data.remove(0, 4);
+
+
+        float target = 0;
+        memcpy(&target, ba_target.data(), sizeof(float));
+        qDebug() << "Target value: " << target;
 
         Q_EMIT newReport(report);
     }

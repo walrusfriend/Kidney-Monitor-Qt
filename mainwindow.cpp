@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onPerfussionSpeedRatioButtonClicked, Qt::QueuedConnection);
     connect(ui->pb_pressure_target, &QPushButton::clicked,
             this, &MainWindow::onPressureTargetValueButtonClicked, Qt::QueuedConnection);
+    connect(ui->pb_enulate_bubble, &QPushButton::clicked,
+            this, &MainWindow::onEmulateBubbleButtonClicked, Qt::QueuedConnection);
 
     connect(ui->cb_device, &QComboBox::currentTextChanged,
             this, &MainWindow::onDeviceComboCurrentTextChanged, Qt::QueuedConnection);
@@ -283,6 +285,12 @@ void MainWindow::onLedColorChanged(LedColor color)
 void MainWindow::onNewReport(const ReportUnit& report) {
     qDebug() << report;
 
+    /* Validate incoming report */
+    if (report.fill_value < -100 or report.fill_value > 200) {
+        qDebug() << "ERROR: MainWindow::onNewReport() - Wront incoming report message\n";
+        return;
+    }
+
     /* Update UI fields */
     ui->le_pressure->setText(QString::number(report.fill_value));
     ui->le_resistance->setText(QString::number(report.resistance));
@@ -393,13 +401,18 @@ void MainWindow::onPumpRpmButtonClicked() {
 }
 
 void MainWindow::onPerfussionSpeedRatioButtonClicked() {
-    m_communicator->onSendToPort("set_perfussion_speed_ratio " + ui->le_perfussion_rate->text() + '\n');
+    m_communicator->onSendToPort("set_perfusion_speed_ratio " + ui->le_perfussion_rate->text() + '\n');
 }
 
 void MainWindow::onPressureTargetValueButtonClicked() {
-    m_communicator->onSendToPort("tare_pressure\n");
+    m_communicator->onSendToPort("set_tv " + ui->le_pressure_target->text() + '\n');
 }
 
 void MainWindow::onTarePressureButtonClicked() {
-    m_communicator->onSendToPort("set_tv " + ui->le_pressure_target->text() + '\n');
+    m_communicator->onSendToPort("tare_pressure\n");
+}
+
+void MainWindow::onEmulateBubbleButtonClicked()
+{
+    m_communicator->onSendToPort("emulate_bubble\n");
 }
