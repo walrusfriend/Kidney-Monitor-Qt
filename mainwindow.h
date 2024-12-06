@@ -77,6 +77,8 @@ private:
     Q_SLOT void onTarePressureButtonClicked();
     Q_SLOT void onEmulateBubbleButtonClicked();
     Q_SLOT void onBackupTimerTimeout();
+    Q_SLOT void onLowTempLimitButtonClicked();
+    Q_SLOT void onHighTempLimitButtonClicked();
 
     /* Debug slots */
     Q_SLOT void onTestTimerTimeOut();
