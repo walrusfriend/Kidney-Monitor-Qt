@@ -25,6 +25,7 @@ SOURCES += \
     DataWriter.cpp \
     GraphsTab.cpp \
     ReportUnit.cpp \
+    SaveDataWorker.cpp \
     SerialCommunicator.cpp \
     main.cpp \
     mainwindow.cpp
@@ -34,6 +35,7 @@ HEADERS += \
     Data_Types.h \
     GraphsTab.h \
     ReportUnit.h \
+    SaveDataWorker.h \
     SerialCommunicator.h \
     mainwindow.h
 

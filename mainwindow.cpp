@@ -4,6 +4,9 @@
 #include <QSerialPortInfo>
 #include <QComboBox>
 #include <QDateTime>
+#include <QFileDialog>
+
+#include <QRandomGenerator>
 
 #include "xlsxdocument.h"
 #include "xlsxchartsheet.h"
@@ -18,14 +21,19 @@ MainWindow::MainWindow(QWidget *parent)
     , m_communicator(new SerialCommunicator())
     // , m_communicatorThread(new QThread(this))
     , m_graph_tab(std::make_unique<GraphsTab>())
+    , workerThread(std::make_unique<QThread>())
+    , worker(std::make_unique<SaveDataWorker>())
 {
     ui->setupUi(this);
 
     ui->cb_kidney_selector->addItem("Правая");
     ui->cb_kidney_selector->addItem("Левая");
 
-    ui->cb_organ_code->addItem("01 (Человек)");
-    ui->cb_organ_code->addItem("02 (Мыш))");
+    ui->cb_organ_code->addItem("00: Человек");
+    ui->cb_organ_code->addItem("01: Свинья");
+    ui->cb_organ_code->addItem("02: Баран");
+    ui->cb_organ_code->addItem("03: Кролик");
+    ui->cb_organ_code->addItem("04: Другое");
 
     connect(this, &MainWindow::setConnectionTarget, this->m_communicator,
             &SerialCommunicator::onSetConnectionTarget, Qt::QueuedConnection);
@@ -85,6 +93,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     /* Fill the combo box with COM ports */
     updateDeviceList();
+
+    test_timer = std::make_unique<QTimer>(this);
+    connect(test_timer.get(), &QTimer::timeout, this, &MainWindow::onTestTimerTimeOut, Qt::QueuedConnection);
+
+    backup_timer = std::make_unique<QTimer>(this);
+    connect(backup_timer.get(), &QTimer::timeout, this, &MainWindow::onBackupTimerTimeout, Qt::QueuedConnection);
+
+    workerThread->start();
+    worker->moveToThread(workerThread.get());
+
+    connect(worker.get(), &SaveDataWorker::finished, workerThread.get(), &QThread::quit);
+    connect(this, &MainWindow::sendDataForSaving, worker.get(), &SaveDataWorker::saveData, Qt::QueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -92,6 +112,10 @@ MainWindow::~MainWindow()
     // m_communicatorThread->quit();
     // m_communicatorThread->wait();
     // delete m_communicatorThread;
+
+    workerThread->quit();
+    workerThread->wait();
+
     delete ui;
 }
 
@@ -318,6 +342,9 @@ void MainWindow::onStartButtonClicked() {
     }
 
     m_communicator->onSendToPort("start\n");
+    // test_timer->start(1000);
+    backup_timer->start(1000*60*40);
+    // backup_timer->start(1000*10);
 }
 
 void MainWindow::onPauseButtonClicked() {
@@ -339,60 +366,66 @@ void MainWindow::onStopButtonClicked() {
     // qDebug() << "onStopButtonClicked";
     m_communicator->onSendToPort("stop\n");
     is_new_experiment = true;
+    // test_timer->stop();
+    backup_timer->stop();
 }
 
 void MainWindow::onExportResultButtonClicked() {
-    // qDebug() << "onExportResultButtonClicked";
+    // Получаем имя файла, введенное пользователем
+    QString file_name = QFileDialog::getSaveFileName(nullptr,
+                                                    "Введите имя файла",
+                                                    "№" + ui->le_experiment_number_control->text() + '_' +
+                                                    synced_date.toString("hh-mm-ss_dd.MM.yyyy") + ".xlsx",
+                                                    "Все файлы (*.*)");
 
-    // for (const ReportUnit& unit : history)
-    //     qDebug() << unit;
+    // QXlsx::Document xlsx(fileName, this);
 
-    QXlsx::Document xlsx;
+    // /* Add table header */
+    // xlsx.write(1, 1, "№");
+    // xlsx.write(1, 2, "Скорость перфузии");
+    // xlsx.write(1, 3, "Сопротивление");
+    // xlsx.write(1, 4, "Давление");
+    // xlsx.write(1, 5, "Температура 1");
+    // xlsx.write(1, 6, "Температура 2");
+    // xlsx.write(1, 7, "Время");
+    // xlsx.write(1, 8, "Режим работы");
+    // xlsx.write(1, 9, "Почка");
+    // xlsx.write(1, 10, "Блокировка");
+    // xlsx.write(1, 11, "Код ошибки");
 
-    /* Add table header */
-    xlsx.write(1, 1, "№");
-    xlsx.write(1, 2, "Скорость перфузии");
-    xlsx.write(1, 3, "Сопротивление");
-    xlsx.write(1, 4, "Давление");
-    xlsx.write(1, 5, "Температура 1");
-    xlsx.write(1, 6, "Температура 2");
-    xlsx.write(1, 7, "Время");
-    xlsx.write(1, 8, "Режим работы");
-    xlsx.write(1, 9, "Почка");
-    xlsx.write(1, 10, "Блокировка");
-    xlsx.write(1, 11, "Код ошибки");
+    // /* Export history */
+    // for(qsizetype i = 0; i < history.size(); ++i) {
+    //     uint64_t row = i + 2;
 
-    /* Export history */
-    for(qsizetype i = 0; i < history.size(); ++i) {
-        uint64_t row = i + 2;
+    //     const ReportUnit& unit = history[i];
 
-        const ReportUnit& unit = history[i];
+    //     xlsx.write(row, 1, i + 1);              /* Add message number */
+    //     xlsx.write(row, 2, unit.flow);
+    //     xlsx.write(row, 3, unit.resistance);
+    //     xlsx.write(row, 4, unit.fill_value);
+    //     xlsx.write(row, 5, unit.temp1);
+    //     xlsx.write(row, 6, unit.temp2);
+    //     xlsx.write(row, 7, unit.time);
+    //     xlsx.write(row, 8, unit.regime);
+    //     xlsx.write(row, 9, (unit.kidney_selector) ? "Левая" : "Правая");
+    //     xlsx.write(row, 10, static_cast<uint8_t>(unit.is_blocked));
 
-        xlsx.write(row, 1, i + 1);              /* Add message number */
-        xlsx.write(row, 2, unit.flow);
-        xlsx.write(row, 3, unit.resistance);
-        xlsx.write(row, 4, unit.fill_value);
-        xlsx.write(row, 5, unit.temp1);
-        xlsx.write(row, 6, unit.temp2);
-        xlsx.write(row, 7, unit.time);
-        xlsx.write(row, 8, unit.regime);
-        xlsx.write(row, 9, (unit.kidney_selector) ? "Левая" : "Правая");
-        xlsx.write(row, 10, static_cast<uint8_t>(unit.is_blocked));
+    //     uint8_t error_code = 0;
+    //     for (uint8_t i = 0; i < unit.alert.size(); ++i) {
+    //         error_code |= (unit.alert[i] & 0b1) << i;
+    //     }
 
-        uint8_t error_code = 0;
-        for (uint8_t i = 0; i < unit.alert.size(); ++i) {
-            error_code |= (unit.alert[i] & 0b1) << i;
-        }
+    //     xlsx.write(row, 11, error_code);
+    // }
 
-        xlsx.write(row, 11, error_code);
-    }
+    // xlsx.save();
 
-    xlsx.saveAs("Test.xlsx"); // save the document as 'Test.xlsx'
+    emit sendDataForSaving(file_name, history);
 }
 
 void MainWindow::onSyncDateTime() {
-    const QDateTime&& date = QDateTime::currentDateTime();
-    ui->le_date_control->setText(date.toString("dd.MM.yyyy hh:mm:ss"));
+    synced_date = QDateTime::currentDateTime();
+    ui->le_date_control->setText(synced_date.toString("dd.MM.yyyy hh:mm:ss"));
     emit ui->le_date_control->textChanged(ui->le_date_control->text());
 }
 
@@ -415,4 +448,42 @@ void MainWindow::onTarePressureButtonClicked() {
 void MainWindow::onEmulateBubbleButtonClicked()
 {
     m_communicator->onSendToPort("emulate_bubble\n");
+}
+
+void MainWindow::onBackupTimerTimeout()
+{
+    qDebug() << "ON BACKUP TIMER";
+
+    QDir dir = QDir::current();
+
+    if (!dir.exists("backups"))
+        dir.mkdir("backups");
+
+    QString file_name = dir.currentPath() + "/backups/" + "№" + ui->le_experiment_number_control->text() + '_' +
+                        QDateTime::currentDateTime().toString("hh-mm-ss_dd.MM.yyyy")
+                        + ".xlsx";
+
+    emit sendDataForSaving(file_name, history);
+}
+
+void MainWindow::onTestTimerTimeOut() {
+    ReportUnit report;
+
+    report.fill_value = QRandomGenerator::global()->bounded(20, 40);
+    report.flow = QRandomGenerator::global()->bounded(20, 25);
+    report.resistance = report.fill_value / report.flow;
+    report.temp1 = QRandomGenerator::global()->bounded(3, 10);
+    report.temp2 = QRandomGenerator::global()->bounded(3, 10);
+    report.time = QTime::currentTime();
+    report.regime = Regime::REGIME1;
+    report.kidney_selector = true;
+    report.is_blocked = false;
+
+    for (bool& error : report.alert)
+        error = false;
+
+    for (bool& status : report.peripheral_status)
+        status = true;
+
+    onNewReport(report);
 }

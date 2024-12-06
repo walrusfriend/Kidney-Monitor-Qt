@@ -9,8 +9,9 @@ GraphsTab::GraphsTab(QWidget *parent)
     : QWidget{parent}
 {
     /* Draw test graph */
-    m_chart = std::make_unique<QChart>();
-    m_chartView = std::make_unique<ChartView>(m_chart.get(), this);
+    // m_chart = std::make_unique<QChart>();
+    m_chart = new QChart();
+    m_chartView = std::make_unique<ChartView>(m_chart, this);
 
     m_chart->addAxis(m_chartView->getXaxis(), Qt::AlignBottom);
     m_chart->addAxis(m_chartView->getYaxis(), Qt::AlignLeft);

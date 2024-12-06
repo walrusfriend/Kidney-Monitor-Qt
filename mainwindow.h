@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QVector>
+#include <QTimer>
 
 #include "SerialCommunicator.h"
 #include "GraphsTab.h"
+#include "SaveDataWorker.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -37,12 +39,22 @@ private:
     bool is_new_experiment = true;
     QVector<ReportUnit> history;
 
+    std::unique_ptr<QTimer> test_timer;
+
+    std::unique_ptr<QTimer> backup_timer;
+    QDateTime synced_date;
+
+    std::unique_ptr<QThread> workerThread;
+    std::unique_ptr<SaveDataWorker> worker;
+
 private:
     void connectCommunicator();
     void disconnectCommunicator();
     void paintAlertLabels(const std::array<bool, 8>& alert);
 
     Q_SIGNAL void drawDataToChart(const ReportUnit& unit);
+    Q_SIGNAL void sendDataForSaving(const QString& file_name,
+                                    const QVector<ReportUnit> &history);
 
     Q_SLOT void updateDeviceList();
     Q_SLOT void onDeviceComboCurrentTextChanged(const QString &text);
@@ -64,5 +76,9 @@ private:
     Q_SLOT void onPressureTargetValueButtonClicked();
     Q_SLOT void onTarePressureButtonClicked();
     Q_SLOT void onEmulateBubbleButtonClicked();
+    Q_SLOT void onBackupTimerTimeout();
+
+    /* Debug slots */
+    Q_SLOT void onTestTimerTimeOut();
 };
 #endif // MAINWINDOW_H

@@ -84,7 +84,7 @@ border-style: outset;</string>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -190,7 +190,7 @@ border-style: outset;</string>
                </size>
               </property>
               <property name="text">
-               <string/>
+               <string>1</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
