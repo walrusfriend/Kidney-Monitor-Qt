@@ -8,19 +8,13 @@
 
 #include <QRandomGenerator>
 
-#include "xlsxdocument.h"
-#include "xlsxchartsheet.h"
-#include "xlsxcellrange.h"
-#include "xlsxchart.h"
-#include "xlsxrichstring.h"
-#include "xlsxworkbook.h"
-
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QVector<ReportUnit>& h, QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_communicator(new SerialCommunicator())
     // , m_communicatorThread(new QThread(this))
     , m_graph_tab(std::make_unique<GraphsTab>())
+    , history(h)
     , workerThread(std::make_unique<QThread>())
     , worker(std::make_unique<SaveDataWorker>())
 {

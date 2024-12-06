@@ -13,8 +13,6 @@ SaveDataWorker::SaveDataWorker(QObject *parent)
 
 void SaveDataWorker::saveData(const QString &file_name,
                       const QVector<ReportUnit> &history) {
-    qDebug() << "File name: " << file_name;
-
     QXlsx::Document xlsx(file_name);
 
     /* Add table header */

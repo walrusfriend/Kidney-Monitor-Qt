@@ -18,9 +18,8 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QVector<ReportUnit>& h, QWidget *parent = nullptr);
     ~MainWindow();
-
 
     Q_SIGNAL void setConnectionTarget(const QString& target);
     Q_SIGNAL void setPortOpen(const bool opened);
@@ -37,7 +36,7 @@ private:
     LedColor m_ledColor { GRAY };
 
     bool is_new_experiment = true;
-    QVector<ReportUnit> history;
+    QVector<ReportUnit>& history;
 
     std::unique_ptr<QTimer> test_timer;
 
